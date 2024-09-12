@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres
+    restart: always
+    container_name: db_morena
+    environment:
+      POSTGRES_USER: "morena"
+      POSTGRES_PASSWORD: "example"
+      POSTGRES_DB: "mordatabasemorenaena"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  servidor:
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    restart: always
+    container_name: morena_server
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./php:/var/www/html
+    networks:
+      - default
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: ./node
+      dockerfile: Dockerfile
+    restart: always
+    container_name: morena_web
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./node:/app
+    networks:
+      - default
+    command: "node app.js"
+    depends_on:
+      - servidor
+
+volumes:
+  postgres_data:

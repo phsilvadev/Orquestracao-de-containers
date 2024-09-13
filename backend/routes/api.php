@@ -21,7 +21,11 @@ Route::middleware('auth.jwt')->group(function () {
         Route::post('created', [EventController::class,'creatingEvent']);
         Route::post('checked_register', [EventController::class,'VerifiSignInEvent']);
         Route::post('remove', [EventController::class,'RemoveEvent']);
+<<<<<<< HEAD
         
+=======
+        Route::post('me', [EventController::class,'MeEvent']);
+>>>>>>> 1373a84d14430a0a495e41695ba0f2103e880f16
     });
 
 });

@@ -1,0 +1,24 @@
+import { Events } from "../@types/events";
+
+export const DATA: Array<Events> = [
+  {
+    date: "05 de Outubro, 2024",
+    title: "JOTA25 em São José dos Campos",
+    description: "Farma conde - São Jośe dos Campos",
+  },
+  {
+    date: "05 de Outubro, 2024",
+    title: "JOTA25 em São José dos Campos",
+    description: "Farma conde - São Jośe dos Campos",
+  },
+  {
+    date: "05 de Outubro, 2024",
+    title: "JOTA25 em São José dos Campos",
+    description: "Farma conde - São Jośe dos Campos",
+  },
+  {
+    date: "05 de Outubro, 2024",
+    title: "JOTA25 em São José dos Campos",
+    description: "Farma conde - São Jośe dos Campos",
+  },
+];

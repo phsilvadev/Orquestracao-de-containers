@@ -79,7 +79,7 @@ const Editar = () => {
         )}
       </AnimatePresence>
       <section className="w-full flex justify-start items-center mt-[100px] flex-col pb-[100px]">
-        <div className="text-[1.8em] font-bold">Cadastrar Evento</div>
+        <div className="text-[1.8em] font-bold">Editar Evento</div>
         <div className="mt-1 font-normal text-[1.2em]">
           Cadastre-se para participar ou criar um evento.
         </div>

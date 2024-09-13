@@ -1,6 +1,7 @@
 "use client";
 
 import { EventCreateOrEdit } from "@/shared/@types/event-create-or-edit";
+import { Events } from "@/shared/@types/events";
 import { DATA } from "@/shared/data/events.data";
 import { axiosAuth } from "@/shared/lib/hooks/axiosAuth";
 import { Card } from "@nextui-org/react";
@@ -8,16 +9,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
-interface Events {
-  date: string;
-  title: string;
-  description: string;
-}
-
 const MorenaEventoMeuEventos = () => {
   // const data: Array<Events> = [];
   const [loading, setLoading] = useState<boolean>(true);
-  const [data, setData] = useState<EventCreateOrEdit[]>([]);
+  const [data, setData] = useState<Events[]>([]);
   const [dataLoading, setDataLoading] = useState<any[]>(DATA);
 
   const formatDate = (date: string) => {
@@ -66,6 +61,10 @@ const MorenaEventoMeuEventos = () => {
     handleMeEvent();
   }, []);
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <section className="flex justify-center items-center mt-[100px] flex-col pb-[100px]">
       <div className="text-[1.8em] font-bold">Meus Eventos</div>
@@ -101,7 +100,9 @@ const MorenaEventoMeuEventos = () => {
                   className="bg-[#fff] shadow-md rounded-[30px] w-full h-[200px]"
                 >
                   <Link
-                    href={`/morena/evento/meu/editar/${item.uudi_code}`}
+                    href={`/morena/evento/meu/editar/${
+                      item ? item.uuid_code : ""
+                    }`}
                     className=" border ps-8 flex justify-center items-start flex-col h-full w-full"
                   >
                     <div>{formatDate(item.starts_at)}</div>

@@ -1,6 +1,6 @@
 export interface EventCreateOrEdit {
   id?: number;
-  uudi_code?: string;
+  uuid_code?: string;
   is_active: boolean;
   name: string;
   description: string;

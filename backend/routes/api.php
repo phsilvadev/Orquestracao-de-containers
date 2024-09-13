@@ -17,24 +17,23 @@ Route::prefix('auth')->group(function () {
 Route::middleware('auth.jwt')->group(function () {
     
     Route::prefix('event')->group(function () {
-        Route::post('register', [EventController::class,'findAll']);
-        Route::post('created', [EventController::class,'creatingEvent']);
-        Route::post('checked_register', [EventController::class,'VerifiSignInEvent']);
-        Route::post('remove', [EventController::class,'RemoveEvent']);
-<<<<<<< HEAD
-        
-=======
-        Route::post('me', [EventController::class,'MeEvent']);
->>>>>>> 1373a84d14430a0a495e41695ba0f2103e880f16
+        // Route::post('register', [EventController::class,'find']);
+        Route::post('created', [EventController::class,'Created']);
+        Route::post('checked_register', [EventController::class,'CheckedRegister']);
+        Route::post('remove', [EventController::class,'Remove']);
+        Route::post('me', [EventController::class,'Me']);
+        Route::post('edit', [EventController::class, 'Edit']);
+        Route::put('{uuid_code}', [EventController::class,'Update']);
+        Route::post('register', [EventController::class,'Register']);
+        Route::delete('{uuid_code}', [EventController::class,'delete']);
     });
 
 });
 
 
 Route::prefix('event')->group(function () {
-    Route::get('findAll', [EventController::class,'findAll']);
-    Route::get('details/{uuid_code}', [EventController::class,'detailsEvent']);
-    Route::post('register', [EventController::class,'signupEvent']);
+    Route::get('', [EventController::class,'Find']);
+    Route::get('{uuid_code}', [EventController::class,'Details']);
 });
 
 // Route::post("singUp", [AuthController::class,"singUp"])->middleware('auth');

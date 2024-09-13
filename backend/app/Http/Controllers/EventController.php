@@ -12,18 +12,20 @@ use Carbon\Carbon;
 class EventController extends Controller
 {
     
-    public function findAll(){
+    public function Find(){
 
         try {
+            
             $events = Events::orderBy("created_at","desc")->get();
 
             return response()->json($events);
+
         } catch (\Throwable $th) {
            return response()->json(['success'=>false, 'error'=>$th->getMessage()]);
         }
     }
 
-    public function signupEvent(Request $request){
+    public function Register(Request $request){
         try {
 
             $EventGuestExistsUser = EventGuest::where('user_id',auth()->user()->id)->exists();
@@ -47,7 +49,7 @@ class EventController extends Controller
         }
     }
 
-    public function creatingEvent(Request $request){
+    public function Created(Request $request){
         
         try {
 
@@ -71,13 +73,13 @@ class EventController extends Controller
             $event->save();
 
         } catch (\Throwable $th) {
-            return response()->json(['success'=>false,'error'=>$th->getMessage()]);
+            return response()->json(['success'=>false,'error'=>$th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
 
 
-    public function detailsEvent($uuid_code){
+    public function Details($uuid_code){
 
         try {
             
@@ -86,24 +88,23 @@ class EventController extends Controller
             if(count($vent) > 0 && count($vent) <= 1){
 
                 $count_event = EventGuest::where('event_id', $vent[0]->id)->count();
-                // $matchAuth = EventGuest::where('user_id', auth()->user()->id)->exists();
-
+              
                 return response()->json([
                     'event' => $vent[0],
                     'writings' => $count_event,
-                    // 'is_signup_event' => auth()->user()->id
-                ]);
+                   
+                ], Response::HTTP_OK);
             }
 
            return response()->json([]);
             
         } catch (\Throwable $th) {
-            return response()->json(['success'=>false,'error'=>$th->getMessage()]);
+            return response()->json(['success'=>false,'error'=>$th->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    public function VerifiSignInEvent(Request $request){
+    public function CheckedRegister(Request $request){
 
         try {
             
@@ -119,7 +120,7 @@ class EventController extends Controller
 
     }
 
-    public function RemoveEvent(Request $request){
+    public function Remove(Request $request){
         try {
             
             $updated = EventGuest::where('user_id', auth()->user()->id)
@@ -129,11 +130,11 @@ class EventController extends Controller
             if($updated){
                 return response()->json([
                     'message' => 'Event guest successfully marked as deleted.',
-                ], 200);
+                ], Response::HTTP_OK);
             }else {
                 return response()->json([
                     'message' => 'Event guest not found or update failed.',
-                ], 404);
+                ], Response::HTTP_NOT_FOUND);
             }
             
 
@@ -142,7 +143,7 @@ class EventController extends Controller
         }
     }
 
-    public function MeEvent(Request $request){
+    public function Me(Request $request){
 
         try {
             $event = Events::where('owner_id', auth()->user()->id)->get();
@@ -152,6 +153,56 @@ class EventController extends Controller
             return response()->json(['success'=>false,'error'=>$th->getMessage()], Response::HTTP_BAD_REQUEST);
         }
 
+    }
+
+    public function Edit(Request $request){
+
+        try {
+            $editEvent = Events::where('owner_id', auth()->user()->id)
+                ->where('uuid_code', $request->event_id)
+                ->get();
+
+            return response()->json($editEvent,Response::HTTP_OK);
+
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>false,'error'=>$th->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+
+
+    }
+
+    public function Update(Request $request, $uuid_code){
+        
+        try {
+            
+            $event = Events::where('uuid_code', $uuid_code);
+
+            $event->update($request->all());
+
+            return response()->json($event,Response::HTTP_OK);
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+    }
+
+    public function Delete($uuid_code){
+        try {
+           
+            $event = Events::where('uuid_code', $uuid_code)->first();
+
+            
+            if (!$event) {
+                return response()->json(['success' => false, 'message' => 'Evento não encontrado.'], Response::HTTP_NOT_FOUND);
+            }
+
+            
+            $event->delete();
+
+            return response()->json(null, Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'error' => $th->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
 }

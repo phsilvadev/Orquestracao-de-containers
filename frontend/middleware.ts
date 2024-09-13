@@ -8,17 +8,14 @@ export default withAuth(
     callbacks: {
       authorized: ({ token, req }) => {
         // Adicione outras rotas aqui que não precisam de token
-        const routesWithoutToken: String[] = [
-          "/",
-          "/morena",
-          "/morena/evento/meu/detalhes",
-          "/morena/details/**",
-        ];
+        const routesWithoutToken: String[] = ["/", "/morena"];
 
-        // Regex para rota dinâmica "/morena/details/**"
+        // Regex para rotas dinâmicas "/morena/event/detalhes/**" e "/morena/event/editar/**"
         const isPublicRoute =
           routesWithoutToken.includes(req.nextUrl.pathname) ||
-          /^\/morena\/details\/.*$/.test(req.nextUrl.pathname); // Regex para rota dinâmica
+          /^\/morena\/event(o)?\/(detalhes|editar)\/.*$/.test(
+            req.nextUrl.pathname
+          );
 
         if (isPublicRoute) {
           return true;

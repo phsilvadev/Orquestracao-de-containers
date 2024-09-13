@@ -195,7 +195,13 @@ docker ps
   docker exec -it morena_server php artisan migrate
   ```
 
-**5. Defina a chave secreta no arquivo `.env`**
+**5. Criando seed no Banco de Dados:**
+
+```bash
+php artisan db:seed
+```
+
+**6. Defina a chave secreta no arquivo `.env`**
 O JWTAuth usa uma chave secreta que deve ser definida no arquivo .env da sua aplicação Laravel. Adicione a seguinte linha ao seu arquivo .env, substituindo your-secret-key por uma chave secreta segura:
 
 ```bash
@@ -209,18 +215,21 @@ JWT_SECRET=your-secret-key
   ```bash
   sudo docker exec -it morena_server php artisan jwt:secret
   ```
-- **Limpe o cache de configuração**
 
-  ```bash 
+  **7. Limpe o cache de configuração**
+
+  ```bash
   sudo docker exec -it morena_server php artisan config:cache
   ```
-- **Reinicar o servidor caso necessario**
 
-  ```bash 
+  **8. Reinicar o servidor caso necessario**
+
+  ```bash
   sudo docker exec -it morena_server php artisan config:cache
   ```
-- **Reinicie os serviços (se necessário)**
-Se você estiver usando Docker ou qualquer outro ambiente que precise reiniciar serviços para aplicar mudanças, faça isso:
+
+  **9. Reinicie os serviços (se necessário)**
+  Se você estiver usando Docker ou qualquer outro ambiente que precise reiniciar serviços para aplicar mudanças, faça isso:
 
   ```bash
   sudo docker-compose restart

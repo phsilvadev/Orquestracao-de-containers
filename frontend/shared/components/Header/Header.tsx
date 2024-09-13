@@ -162,9 +162,9 @@ const Header = () => {
           />
           {user && (
             <>
-              <span className="font-extrabold">
+              <Link href={"/morena/evento/meu"} className="font-extrabold">
                 {user.name.split(" ")[0]} {user.name.split(" ")[1]}
-              </span>
+              </Link>
               <Divider
                 orientation="vertical"
                 className="h-[20px] w-[3px] bg-[#000]"

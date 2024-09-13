@@ -161,7 +161,7 @@ const Details = () => {
 
   return (
     <AnimatePresence>
-      {isConflict && <Conflict />}
+      {/* {isConflict && <Conflict />} */}
       {loading && <ModalCustom />}
       {!loading && (
         <section className="w-full flex justify-center items-center">

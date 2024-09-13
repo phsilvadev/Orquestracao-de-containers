@@ -142,4 +142,16 @@ class EventController extends Controller
         }
     }
 
+    public function MeEvent(Request $request){
+
+        try {
+            $event = Events::where('owner_id', auth()->user()->id)->get();
+
+            return response()->json($event,Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            return response()->json(['success'=>false,'error'=>$th->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
+
+    }
+
 }

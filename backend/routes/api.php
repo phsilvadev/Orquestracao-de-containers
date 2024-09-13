@@ -20,6 +20,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::post('creatingEvent', [EventController::class,'creatingEvent']);
         Route::post('VerifiSignInEvent', [EventController::class,'VerifiSignInEvent']);
         Route::post('remove', [EventController::class,'RemoveEvent']);
+        Route::post('me', [EventController::class,'MeEvent']);
     });
 });
 

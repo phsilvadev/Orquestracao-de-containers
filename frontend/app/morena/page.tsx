@@ -112,7 +112,7 @@ const Morena = () => {
               </motion.div>
             ))}
           {!loading && !event.length && (
-            <section className="col-span-3 text-center bg-[#fff] p-2 border-1 rounded-[100px]">
+            <section className="col-span-3 text-center bg-[#fff] p-2 border-1 rounded-[50px] h-[300px] flex justify-center items-center">
               Nenhum evento disponível
             </section>
           )}

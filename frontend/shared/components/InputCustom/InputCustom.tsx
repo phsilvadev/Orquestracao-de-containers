@@ -35,7 +35,9 @@ const InputCustom = ({
           }
           className="p-3 w-full border rounded-[7px]"
           rows={6}
-        ></textarea>
+        >
+          {value}
+        </textarea>
       )}
     </div>
   );

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import { axiosBase } from "@/shared/lib/axiosBase";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -12,7 +10,7 @@ const handler = NextAuth({
         email: { label: "email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const res = await axiosBase.post("/auth/singIn", {
           email: credentials?.email,
           password: credentials?.password,
@@ -41,10 +39,19 @@ const handler = NextAuth({
   },
   callbacks: {
     async session({ session, token, user }) {
-      session.user = token;
+      session.user = {
+        ...user,
+        id: token.id as number,
+        email: token.email as string,
+        access_token: token.access_token as string,
+        loggedIn: token.loggedIn as boolean,
+        refresh_token: token.refresh_token as string,
+        uuid_code: token.uuid_code as string,
+        name: token.name as string,
+      };
       return session;
     },
-    async jwt({ token, account, user, trigger, session }) {
+    async jwt({ token, user, trigger, session }) {
       if (trigger === "update") {
         if (session.user.access_token) {
           token.access_token = session.user.access_token;

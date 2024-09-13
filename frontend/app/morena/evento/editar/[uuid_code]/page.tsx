@@ -7,20 +7,24 @@ import { DATAEVENTCREATEOREDIT } from "@/shared/data/form-data";
 import { axiosAuth } from "@/shared/lib/hooks/axiosAuth";
 import { Button, Card, Spinner } from "@nextui-org/react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
+import { IoClose } from "react-icons/io5";
 import { toast } from "react-toastify";
 
 const Editar = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [form, setForm] = useState<EventCreateOrEdit>(DATAEVENTCREATEOREDIT);
+  const params = useParams();
+  const router = useRouter();
+  const [isEvent, setIsEvent] = useState<boolean>(false);
 
-  const handleSave = async () => {
+  const handleEditar = async () => {
     setLoading(true);
     try {
-      const res = await axiosAuth.post("/event/creatingEvent", form);
+      const res = await axiosAuth.put(`/event/${form.uuid_code}`, form);
       if (res.status == 200) {
         toast.success("Eventos salvo com sucesso!!", { autoClose: 3000 });
-        setForm(DATAEVENTCREATEOREDIT);
       } else {
         toast.warning("Não foi possivel savar", { autoClose: 3000 });
       }
@@ -30,7 +34,7 @@ const Editar = () => {
     setLoading(false);
   };
 
-  const handleSearchCep = async (value: any) => {
+  const handleSearchCep = async (value: string) => {
     setForm((prev) => ({ ...prev, zipcode: MaskCep(value) }));
 
     fetch(`https://viacep.com.br/ws/${MaskCep(value).replace("-", "")}/json/`)
@@ -60,8 +64,68 @@ const Editar = () => {
     return value.slice(0, 9); // Limita o valor a 9 caracteres
   };
 
+  const handleDetalhsEvent = useCallback(async () => {
+    if (params.uuid_code) {
+      const res = await axiosAuth.get(`/event/${params.uuid_code}`);
+      if (res.status == 200) {
+        if (res.data.event) {
+          setLoading(false);
+          setForm(res.data.event);
+        } else {
+          setIsEvent(true);
+        }
+      } else {
+        toast.error(
+          "Ocorreu um erro com a comunicaçãoErro Interno do Servidor",
+          {
+            autoClose: 3000,
+          }
+        );
+      }
+    }
+  }, [params.uuid_code]);
+
+  const handleRedirect = () => {
+    router.push("/morena/evento/meu");
+  };
+
+  const handleDeletar = async () => {
+    const res = await axiosAuth.delete(`/event/${params.uuid_code}`);
+    setLoading(true);
+    if (res.status == 200) {
+      router.push("/morena/evento/meu");
+    } else {
+      toast.error("Ocorreu um erro com a comunicaçãoErro Interno do Servidor", {
+        autoClose: 3000,
+      });
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    handleDetalhsEvent();
+  }, [handleDetalhsEvent]);
+
   return (
     <>
+      {isEvent && (
+        <div className="bg-modal w-full h-full fixed left-0 top-0 z-[55] flex justify-center items-center">
+          <motion.div
+            initial={{ opacity: 0, y: -500 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -500 }}
+          >
+            <Card className="p-7 ps-[50px] pe-[50px] relative">
+              <IoClose
+                className="absolute right-2 top-2 text-[20px] cursor-pointer"
+                onClick={handleRedirect}
+              />
+              <div className="text-center text-[1.3em] font-bold">Aviso!!</div>
+              <div className="mt-4">Evento não foi encontrado.</div>
+            </Card>
+          </motion.div>
+        </div>
+      )}
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -89,12 +153,12 @@ const Editar = () => {
             <div className="flex justify-center items-start flex-col">
               <label>Ativo?</label>
               <input
-                onChange={(event) =>
+                onChange={(event) => {
                   setForm((prev) => ({
                     ...prev,
-                    is_active: Boolean(event.target.value),
-                  }))
-                }
+                    is_active: event.target.checked,
+                  }));
+                }}
                 checked={form.is_active}
                 type="checkbox"
                 className="scale-[1.5] mt-5 ms-2"
@@ -254,10 +318,18 @@ const Editar = () => {
 
         <Button
           size="lg"
-          className="w-[400px] rounded-[100px] bg-[#000] mt-9 text-[#fff]"
-          onClick={handleSave}
+          className="w-[400px] rounded-[100px] bg-[#000]  text-[#fff]"
+          onClick={handleEditar}
         >
-          Cadastrar
+          Editar
+        </Button>
+        <Button
+          size="lg"
+          className="w-[400px] rounded-[100px] mt-3 text-[#fff] bg-[red]"
+          variant="flat"
+          onClick={handleDeletar}
+        >
+          Excluir
         </Button>
       </section>
     </>

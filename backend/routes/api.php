@@ -22,7 +22,7 @@ Route::middleware('auth.jwt')->group(function () {
         Route::post('checked_register', [EventController::class,'CheckedRegister']);
         Route::post('remove', [EventController::class,'Remove']);
         Route::post('me', [EventController::class,'Me']);
-        Route::post('edit', [EventController::class, 'Edit']);
+        // Route::post('edit', [EventController::class, 'Edit']);
         Route::put('{uuid_code}', [EventController::class,'Update']);
         Route::post('register', [EventController::class,'Register']);
         Route::delete('{uuid_code}', [EventController::class,'delete']);

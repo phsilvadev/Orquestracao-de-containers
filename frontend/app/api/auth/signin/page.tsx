@@ -10,8 +10,6 @@ import Header from "@/shared/components/Header/Header";
 import InputCustom from "@/shared/components/InputCustom/InputCustom";
 
 const SignIn = () => {
-  const [user, setUser] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
   const [isOpenModalSpinner, setIsOpenModalSpinner] = useState<boolean>(false);
 
   const [singIn, setSingIn] = useState<{ email: string; password: string }>({

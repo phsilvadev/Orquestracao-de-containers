@@ -6,7 +6,6 @@ import InputCustom from "@/shared/components/InputCustom/InputCustom";
 import { DATAEVENTCREATEOREDIT } from "@/shared/data/form-data";
 import { axiosAuth } from "@/shared/lib/hooks/axiosAuth";
 import { Button, Card, Spinner } from "@nextui-org/react";
-import axios from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -31,7 +30,7 @@ const MorenaEventoCriar = () => {
     setLoading(false);
   };
 
-  const handleSearchCep = async (value: any) => {
+  const handleSearchCep = async (value: string) => {
     setForm((prev) => ({ ...prev, zipcode: MaskCep(value) }));
 
     fetch(`https://viacep.com.br/ws/${MaskCep(value).replace("-", "")}/json/`)

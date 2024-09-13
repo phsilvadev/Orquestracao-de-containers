@@ -189,7 +189,9 @@ class EventController extends Controller
     public function Delete($uuid_code){
         try {
            
-            $event = Events::where('uuid_code', $uuid_code)->first();
+            $event = Events::where('uuid_code', $uuid_code)
+            ->where('owner_id', auth()->user()->id)
+            ->first();
 
             
             if (!$event) {

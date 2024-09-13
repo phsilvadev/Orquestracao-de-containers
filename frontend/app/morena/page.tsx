@@ -12,12 +12,11 @@ import { useCallback, useEffect, useState } from "react";
 const Morena = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
-  const [dataLoading, setData] = useState<any[]>(DATA);
   const [event, setEvent] = useState<Events[]>([]);
 
   const events = useCallback(async () => {
     try {
-      const res = await axiosBase.get("/event/findAll");
+      const res = await axiosBase.get("/event/");
 
       if (res.status == 200) {
         setEvent(res.data);
@@ -68,16 +67,17 @@ const Morena = () => {
         <div
           className={[
             "grid",
-            "lg:grid-cols-2",
+            "lg:grid-cols-3",
             "max-md:p-[20px]",
             "gap-9",
+            "lg:w-[66%]",
           ].join(" ")}
         >
           {loading &&
-            dataLoading.map((item, index) => (
+            DATA.map((item, index) => (
               <Card
                 key={index}
-                className="bg-[#fff] shadow-md rounded-[30px] sm:w-[450px]"
+                className="bg-[#fff] shadow-md rounded-[30px] sm:w-[450px] lg:w-full h-[200px]"
               >
                 <Link
                   href={""}
@@ -102,7 +102,7 @@ const Morena = () => {
                 >
                   <Card
                     isPressable
-                    className="bg-[#fff] shadow-md rounded-[30px] w- h-[200px]"
+                    className="bg-[#fff] shadow-md rounded-[30px] sm:w-[450px] lg:w-full h-[200px]"
                   >
                     <Link
                       href={`/morena/evento/detalhes/${item.uuid_code}`}
@@ -120,7 +120,7 @@ const Morena = () => {
                 </motion.div>
               ))}
             {!loading && !event.length && (
-              <section className="col-span-3 text-center bg-[#fff] p-2 border-1 rounded-[50px] h-[300px] flex justify-center items-center">
+              <section className="col-span-3 text-center bg-[#fff] p-2 border-1 rounded-[20px] h-[200px] flex justify-center items-center">
                 Nenhum evento disponível
               </section>
             )}

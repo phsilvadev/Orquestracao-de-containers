@@ -128,7 +128,6 @@
     DB_DATABASE=databases
     DB_USERNAME=morena
     DB_PASSWORD=morenaapi
-
     ```
 
     **Observação:** Certifique-se de que o valor de **DB_HOST** corresponde exatamente ao nome do serviço de banco de dados definido no seu arquivo docker-compose.yml. Por exemplo, se no docker-compose.yml o serviço do PostgreSQL é definido como db, o valor de **DB_HOST** deve ser db.
@@ -150,7 +149,6 @@
       ports:
           - '5498:5432'
   ...
-
   ```
 
 ### Configuração com Docker
@@ -197,9 +195,17 @@ docker ps
 
 **5. Criando seed no Banco de Dados:**
 
-```bash
-php artisan db:seed
-```
+- linux:
+
+  ```bash
+  sudo docker exec -it morena_server php artisan db:seed
+  ```
+
+- Windows:
+
+  ```bash
+  docker exec -it morena_server php artisan db:seed
+  ```
 
 **6. Defina a chave secreta no arquivo `.env`**
 O JWTAuth usa uma chave secreta que deve ser definida no arquivo .env da sua aplicação Laravel. Adicione a seguinte linha ao seu arquivo .env, substituindo your-secret-key por uma chave secreta segura:
@@ -212,28 +218,50 @@ JWT_SECRET=your-secret-key
 
   Se você ainda não tem uma chave secreta ou deseja gerar uma nova, você pode usar o comando Artisan para gerá-la automaticamente. Execute o seguinte comando:
 
-  ```bash
-  sudo docker exec -it morena_server php artisan jwt:secret
-  ```
+  - Linux
+    ```bash
+    sudo docker exec -it morena_server php artisan jwt:secret
+    ```
+  - Windows
+    ```bash
+    docker exec -it morena_server php artisan jwt:secret
+    ```
 
   **7. Limpe o cache de configuração**
 
-  ```bash
-  sudo docker exec -it morena_server php artisan config:cache
-  ```
+  - Linux
+    ```bash
+    sudo docker exec -it morena_server php artisan config:cache
+    ```
+  - Windows
+    ```bash
+    docker exec -it morena_server php artisan config:cache
+    ```
 
   **8. Reinicar o servidor caso necessario**
 
-  ```bash
-  sudo docker exec -it morena_server php artisan config:cache
-  ```
+  - Linux
+    ```bash
+      sudo docker exec -it morena_server php artisan config:cache
+    ```
+  - Windows
+    ```bash
+    docker exec -it morena_server php artisan config:cache
+    ```
 
   **9. Reinicie os serviços (se necessário)**
   Se você estiver usando Docker ou qualquer outro ambiente que precise reiniciar serviços para aplicar mudanças, faça isso:
 
-  ```bash
-  sudo docker-compose restart
-  ```
+  - Linux
+    ```bash
+    sudo docker-compose restart
+    ```
+  - Windows
+    ```bash
+    docker-compose restart
+    ```
+
+## AVISO!! Todos os comandos informados acima servem tanto para o Docker quanto para ambientes que não utilizam Docker.
 
 ### 6.2 Sem Docker
 

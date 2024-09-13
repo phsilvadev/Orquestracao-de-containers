@@ -1,6 +1,5 @@
 "use client";
 
-import { EventCreateOrEdit } from "@/shared/@types/event-create-or-edit";
 import { Events } from "@/shared/@types/events";
 import { DATA } from "@/shared/data/events.data";
 import { axiosAuth } from "@/shared/lib/hooks/axiosAuth";
@@ -13,7 +12,6 @@ const MorenaEventoMeuEventos = () => {
   // const data: Array<Events> = [];
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState<Events[]>([]);
-  const [dataLoading, setDataLoading] = useState<any[]>(DATA);
 
   const formatDate = (date: string) => {
     // Separar os componentes do ano, mês e dia
@@ -59,11 +57,7 @@ const MorenaEventoMeuEventos = () => {
 
   useEffect(() => {
     handleMeEvent();
-  }, []);
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  }, [handleMeEvent]);
 
   return (
     <section className="flex justify-center items-center mt-[100px] flex-col pb-[100px]">
@@ -71,7 +65,7 @@ const MorenaEventoMeuEventos = () => {
       <div className="mt-[200px] grid grid-cols-3 sm:w-[67%] gap-9">
         <AnimatePresence>
           {loading &&
-            dataLoading.map((item, index) => (
+            DATA.map((item, index) => (
               <Card
                 key={index}
                 className="bg-[#fff] shadow-md rounded-[30px] max-sm:w-[100%]"
@@ -100,9 +94,7 @@ const MorenaEventoMeuEventos = () => {
                   className="bg-[#fff] shadow-md rounded-[30px] w-full h-[200px]"
                 >
                   <Link
-                    href={`/morena/evento/meu/editar/${
-                      item ? item.uuid_code : ""
-                    }`}
+                    href={`/morena/evento/editar/${item ? item.uuid_code : ""}`}
                     className=" border ps-8 flex justify-center items-start flex-col h-full w-full"
                   >
                     <div>{formatDate(item.starts_at)}</div>

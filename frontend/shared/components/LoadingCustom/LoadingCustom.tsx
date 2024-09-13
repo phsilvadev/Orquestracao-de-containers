@@ -2,7 +2,7 @@
 
 import { Card, Spinner } from "@nextui-org/react";
 
-const ModalCustom = () => {
+const LoadingCustom = () => {
   return (
     <div className="modal-container">
       <div className="flex justify-center items-center w-full h-full">
@@ -14,4 +14,4 @@ const ModalCustom = () => {
   );
 };
 
-export default ModalCustom;
+export default LoadingCustom;

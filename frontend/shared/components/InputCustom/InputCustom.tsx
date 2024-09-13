@@ -33,11 +33,10 @@ const InputCustom = ({
           onChange={
             onChange ? (event) => onChange(event.target.value) : (event) => {}
           }
+          value={value}
           className="p-3 w-full border rounded-[7px]"
           rows={6}
-        >
-          {value}
-        </textarea>
+        ></textarea>
       )}
     </div>
   );

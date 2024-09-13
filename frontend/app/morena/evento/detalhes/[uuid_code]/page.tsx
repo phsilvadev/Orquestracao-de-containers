@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Spinner } from "@nextui-org/react";
+import { Button, Card, Spinner } from "@nextui-org/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCallback, useEffect, useState } from "react";
 import { BsGeoAltFill } from "react-icons/bs";
@@ -10,12 +10,13 @@ import { useParams, useRouter } from "next/navigation";
 import { EventCreateOrEdit } from "@/shared/@types/event-create-or-edit";
 import { AxiosResponse } from "axios";
 import { ResponseDetailsEvent } from "@/shared/@types/Response-details-event";
-import ModalCustom from "@/shared/components/ModalCustom/ModalCustom";
+
 import { axiosAuth } from "@/shared/lib/hooks/axiosAuth";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import { axiosBase } from "@/shared/lib/axiosBase";
-import Conflict from "@/shared/components/Alert/Conflict/Conflict";
+import LoadingCustom from "@/shared/components/LoadingCustom/LoadingCustom";
+import { IoClose } from "react-icons/io5";
 
 const Details = () => {
   const router = useRouter();
@@ -40,7 +41,7 @@ const Details = () => {
 
     try {
       const res = await axiosBase.get<ResponseDetailsEvent>(
-        `/event/details/${params.uuid_code}`
+        `/event/${params.uuid_code}`
       );
 
       if (res.status == 200) {
@@ -78,7 +79,7 @@ const Details = () => {
 
     setLoading(true);
     try {
-      const res = await axiosAuth.post("/event/signup", {
+      const res = await axiosAuth.post("/event/register", {
         event_id: event?.id,
       });
       if (res.status == 200) {
@@ -121,7 +122,11 @@ const Details = () => {
         setCheckingRegistration(false);
       }
     } catch (error) {
-      toast.error("Erro Interno do Servidor");
+      const response = error as AxiosResponse;
+
+      if (response.status == 500) {
+        toast.error("Erro Interno do Servidor");
+      }
     }
 
     setLoading(false);
@@ -130,7 +135,7 @@ const Details = () => {
   const checkIsMesignedUp = useCallback(async () => {
     if (event && session?.user) {
       try {
-        const res = await axiosAuth.post("/event/VerifiSignInEvent", {
+        const res = await axiosAuth.post("/event/checked_register", {
           event_id: event.id,
         });
 
@@ -161,8 +166,30 @@ const Details = () => {
 
   return (
     <AnimatePresence>
-      {/* {isConflict && <Conflict />} */}
-      {loading && <ModalCustom />}
+      {isConflict && (
+        <motion.div className="modal-container">
+          <motion.div
+            initial={{ opacity: 0, y: -300 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -500 }}
+            className="flex justify-center items-center w-full h-full"
+          >
+            <Card className="p-4 w-[400px] h-[200px] flex justify-center items-center flex-col relative">
+              <IoClose
+                className="absolute right-2 top-2 text-[20px] cursor-pointer"
+                onClick={() => setIsConflict(false)}
+              />
+              <div className="text-[20px] text-center font-extrabold">
+                <div> Não foi possivel se inscrever</div>
+              </div>
+              <div className="mt-4 text-center ">
+                Você não pode se inscrever em dois eventos ao mesmo tempo.
+              </div>
+            </Card>
+          </motion.div>
+        </motion.div>
+      )}
+      {loading && <LoadingCustom />}
       {!loading && (
         <section className="w-full flex justify-center items-center">
           <section className="mt-[100px] w-[50%]">

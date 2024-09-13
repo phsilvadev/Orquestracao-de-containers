@@ -12,7 +12,7 @@ class Events extends Bases
 
     protected $fillable = [
         'owner_id', 'name', 'description', 'address', 'complement', 'zipcode',
-        'number', 'city', 'state', 'starts_at', 'ends_at', 'max_subscription', 'is_active'
+        'number', 'city', 'state', 'starts_at', 'ends_at', 'max_subscription', 'is_active', 'neighborhood'
     ];
 
     public function owner()

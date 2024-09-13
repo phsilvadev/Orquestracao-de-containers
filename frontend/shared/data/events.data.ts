@@ -1,6 +1,4 @@
-import { Events } from "../@types/events";
-
-export const DATA: Array<Events> = [
+export const DATA: Array<any> = [
   {
     date: "05 de Outubro, 2024",
     title: "JOTA25 em São José dos Campos",

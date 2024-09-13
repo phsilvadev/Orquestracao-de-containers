@@ -22,26 +22,28 @@ services:
       - "8000:8000"
     volumes:
       - ./php:/var/www/html
-    networks:
-      - default
+    # networks:
+    #   - netmorena
     depends_on:
       - db
 
-  # web:
-  #   build:
-  #     context: ./node
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   container_name: morena_web
-  #   ports:
-  #     - "3000:3000"
-  #   volumes:
-  #     - ./node:/app
-  #   networks:
-  #     - default
-  #   command: "node app.js"
-  #   depends_on:
-  #     - servidor
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: always
+    container_name: morena_web
+    ports:
+      - "3000:3000"
+    # volumes:
+    #   - ./node:/app
+    # networks:
+    #   - netmorena
+    command: "npm start"
+    depends_on:
+      - servidor
 
 volumes:
   postgres_data:
+# networks:
+#   netmorena:

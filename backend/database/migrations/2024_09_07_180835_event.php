@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('owner_id');
             $table->string('name');
             $table->text('description')->nullable();
+            $table->text('neighborhood')->nullable();
             $table->string('address');
             $table->string('complement')->nullable();
             $table->string('zipcode');

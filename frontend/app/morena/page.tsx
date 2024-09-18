@@ -16,7 +16,7 @@ const Morena = () => {
 
   const events = useCallback(async () => {
     try {
-      const res = await axiosBase.get("/event/");
+      const res = await axiosBase.get("/event");
 
       if (res.status == 200) {
         setEvent(res.data);

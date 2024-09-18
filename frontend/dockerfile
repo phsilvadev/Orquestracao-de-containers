@@ -1,6 +1,9 @@
 # Use a imagem base oficial do Node.js LTS
 FROM node:19-alpine
 
+# Instale o curl
+RUN apk add --no-cache curl
+
 # Defina o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
@@ -8,7 +11,7 @@ WORKDIR /app
 COPY package*.json .
 
 # Instale as dependências da aplicação
-RUN npm install --production
+RUN npm install
 
 # Copie o restante dos arquivos da aplicação para o contêiner
 COPY . .

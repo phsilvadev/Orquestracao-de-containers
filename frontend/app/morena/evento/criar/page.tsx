@@ -17,7 +17,7 @@ const MorenaEventoCriar = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
-      const res = await axiosAuth.post("/event/creatingEvent", form);
+      const res = await axiosAuth.put("/event", form);
       if (res.status == 200) {
         toast.success("Eventos salvo com sucesso!!", { autoClose: 3000 });
         setForm(DATAEVENTCREATEOREDIT);
